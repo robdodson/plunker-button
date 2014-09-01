@@ -1,0 +1,17 @@
+{
+  "name": "plunker-btn",
+  "version": "0.0.0",
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components"
+  ],
+  "main": "plunker-btn.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.4.0",
+    "paper-button": "Polymer/paper-button#~0.4.0",
+    "core-icons": "Polymer/core-icons#~0.4.0",
+    "core-ajax": "Polymer/core-ajax#~0.4.0",
+    "native-promise-only": "~0.7.5-e"
+  }
+}
