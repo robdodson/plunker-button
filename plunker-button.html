@@ -32,6 +32,12 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 <polymer-element name="plunker-button" attributes="src">
 
   <template>
+    <style>
+      paper-button::shadow #content span {
+        vertical-align: middle;
+        margin: 5px 8px 5px 0;
+      }
+    </style>
 
     <paper-button
         raisedButton
