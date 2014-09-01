@@ -1,12 +1,12 @@
 {
-  "name": "plunker-btn",
+  "name": "plunker-button",
   "version": "0.0.0",
   "keywords": [
     "seed",
     "polymer",
     "web-components"
   ],
-  "main": "plunker-btn.html",
+  "main": "plunker-button.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^0.4.0",
     "paper-button": "Polymer/paper-button#~0.4.0",

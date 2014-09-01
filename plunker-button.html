@@ -11,11 +11,11 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 
 ##### Example
 
-    <plunker-btn src="example"></plunker-btn>
+    <plunker-button src="example"></plunker-button>
 
     // example/manifest.json
     {
-      "name": "plunker-btn-demo",
+      "name": "plunker-button-demo",
       "files": [
         "index.html",
         "x-foo.html",
@@ -24,12 +24,12 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
     }
 
 
-@element plunker-btn
+@element plunker-button
 @blurb Submit files to Plunker
 @status alpha
-@homepage http://robdodson.github.io/plunker-btn
+@homepage http://robdodson.github.io/plunker-button
 -->
-<polymer-element name="plunker-btn" attributes="src">
+<polymer-element name="plunker-button" attributes="src">
 
   <template>
 
@@ -107,7 +107,7 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
         form.remove();
       }
 
-      Polymer('plunker-btn', {
+      Polymer({
         /**
          * The `openPlunker` method will submit your files to Plunker and
          * open the sketch in the current window. This method is called whenever

@@ -1,4 +1,4 @@
-plunker-btn
+plunker-button
 ================
 
-See the [component page](http://robdodson.github.io/plunker-btn) for more information.
+See the [component page](http://robdodson.github.io/plunker-button) for more information.
