@@ -119,9 +119,11 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
         openPlunker: function() {
           var self = this;
           var exampleFolder = this.src;
+          var description = '';
           // Grab the manifest.json
           getJSON(exampleFolder + '/manifest.json')
             .then(function(manifest) {
+              description = manifest.description;
               return manifest;
             })
             // Read the list of files that need to be submitted and put each
@@ -154,8 +156,7 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
               postData['tags[0]'] = "polymer";
               postData['tags[1]'] = "example";
               postData.private = true;
-              // TODO: add description
-              postData.description = 'Polymer example';
+              postData.description = description;
               formPostData('http://plnkr.co/edit/?p=preview', postData);
             })
             .catch(function(err) {

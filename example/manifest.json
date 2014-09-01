@@ -1,5 +1,6 @@
 {
   "name": "plunker-btn-demo",
+  "description": "A Plunker Button Example",
   "files": [
     "index.html",
     "x-foo.html",
