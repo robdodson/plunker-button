@@ -1,7 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../core-icons/core-icons.html">
-<link rel="import" href="../core-ajax/core-ajax.html">
 <link rel="import" href="promise-import.html">
 
 <!--
@@ -13,9 +12,10 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 
     <plunker-button src="example"></plunker-button>
 
-    // example/manifest.json
+##### manifest.json
     {
-      "name": "plunker-button-demo",
+      "name": "Plunker Button Demo",
+      "description": "A really cool Plunker example",
       "files": [
         "index.html",
         "x-foo.html",
@@ -29,7 +29,7 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 @status alpha
 @homepage http://robdodson.github.io/plunker-button
 -->
-<polymer-element name="plunker-button" attributes="src">
+<polymer-element name="plunker-button" attributes="src label">
 
   <template>
     <style>
@@ -42,7 +42,7 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
     <paper-button
         raisedButton
         icon="exit-to-app"
-        label="Edit on Plunker"
+        label="{{label}}"
         on-tap="{{openPlunker}}">
     </paper-button>
 
@@ -115,15 +115,23 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 
       Polymer({
         /**
+         * The `label` attribute defines the text displayed on the button.
+         *
+         * @attribute label
+         * @type string
+         * @default 'Edit on Plunker'
+         */
+        label: 'Edit on Plunker',
+
+        /**
          * The `openPlunker` method will submit your files to Plunker and
          * open the sketch in the current window. This method is called whenever
          * the user clicks on the button, but you could also call it using
-         * JavaScript
+         * JavaScript.
          *
          * @method openPlunker
          */
         openPlunker: function() {
-          var self = this;
           var exampleFolder = this.src;
           var description = '';
           // Grab the manifest.json
