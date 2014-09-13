@@ -3,7 +3,7 @@
   "description": "A Plunker Button Example",
   "files": [
     "index.html",
-    "x-foo.html",
+    "x-foo-plunker.html",
     "x-foo.css"
   ]
 }

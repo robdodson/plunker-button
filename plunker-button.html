@@ -29,7 +29,7 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 @status alpha
 @homepage http://robdodson.github.io/plunker-button
 -->
-<polymer-element name="plunker-button" attributes="src label">
+<polymer-element name="plunker-button" attributes="src label strip">
 
   <template>
     <style>
@@ -124,6 +124,20 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
         label: 'Edit on Plunker',
 
         /**
+         * The `strip` attribute allows you to remove a portion of a filename
+         * before it's submitted to Plunker.
+         *
+         * `<plunker-button strip="-plunker"></plunker-button>`
+         *
+         * will turn the `x-foo-plunker.html` file into `x-foo.html`.
+         *
+         * @attribute strip
+         * @type string
+         * @default '-plunker'
+         */
+        strip: '-plunker',
+
+        /**
          * The `openPlunker` method will submit your files to Plunker and
          * open the sketch in the current window. This method is called whenever
          * the user clicks on the button, but you could also call it using
@@ -132,6 +146,7 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
          * @method openPlunker
          */
         openPlunker: function() {
+          var self = this;
           var exampleFolder = this.src;
           var description = '';
           // Grab the manifest.json
@@ -149,6 +164,11 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
                 filePromises.push(
                   get(exampleFolder + '/' + filename)
                     .then(function(response) {
+
+                      if (filename.indexOf(self.strip) !== -1) {
+                        filename = filename.replace(self.strip, '');
+                      }
+
                       return {
                         name: filename,
                         content: response
