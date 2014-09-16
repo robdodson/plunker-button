@@ -10,7 +10,7 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 
 ##### Example
 
-    <plunker-button src="example"></plunker-button>
+    <plunker-button src="example/manifest.json"></plunker-button>
 
 ##### manifest.json
     {
@@ -115,6 +115,17 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 
       Polymer({
         /**
+         * The `src` attribute should point to a `manifest.json` file that
+         * matches the format in the element description. The contents of
+         * this `manifest.json` are submitted to Plunker.
+         *
+         * @attribute src
+         * @type string
+         * @default null
+         */
+        src: null,
+
+        /**
          * The `label` attribute defines the text displayed on the button.
          *
          * @attribute label
@@ -147,10 +158,10 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
          */
         openPlunker: function() {
           var self = this;
-          var exampleFolder = this.src;
+          var exampleFolder = this.src.slice(0, this.src.lastIndexOf('/'));
           var description = '';
           // Grab the manifest.json
-          getJSON(exampleFolder + '/manifest.json')
+          getJSON(this.src)
             .then(function(manifest) {
               description = manifest.description;
               return manifest;
