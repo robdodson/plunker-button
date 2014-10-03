@@ -8,9 +8,9 @@
   ],
   "main": "plunker-button.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.4.0",
-    "paper-button": "Polymer/paper-button#^0.4.0",
-    "core-icons": "Polymer/core-icons#^0.4.0",
+    "polymer": "Polymer/polymer#^0.4.2",
+    "paper-button": "Polymer/paper-button#^0.4.2",
+    "core-icons": "Polymer/core-icons#^0.4.2",
     "native-promise-only": "^0.7.5-e"
   }
 }
