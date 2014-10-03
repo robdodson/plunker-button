@@ -35,14 +35,15 @@ Set the `src` to a directory that contains a `manifest.json` that lists all of t
 
   <template>
     <style>
-      paper-button::shadow #content span {
+      span {
         vertical-align: middle;
-        margin: 5px 8px 5px 0;
+        margin: 5px 0 5px 5px;
       }
     </style>
 
-    <paper-button raised icon="exit-to-app" on-tap="{{openPlunker}}">
-      <content></content>
+    <paper-button raised on-tap="{{openPlunker}}">
+      <core-icon icon="exit-to-app"></core-icon>
+      <span><content></content></span>
     </paper-button>
 
   </template>
