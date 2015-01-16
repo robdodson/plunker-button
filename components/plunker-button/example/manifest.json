@@ -1,0 +1,9 @@
+{
+  "name": "plunker-btn-demo",
+  "description": "A Plunker Button Example",
+  "files": [
+    "index.html",
+    "x-foo-plunker.html",
+    "x-foo.css"
+  ]
+}

@@ -1,0 +1,207 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="promise-import.html">
+
+<!--
+Create Plunker sketches on the fly by reading in a `manifest.json` of files to submit to the Plunker service.
+
+Set the `src` to a directory that contains a `manifest.json` that lists all of the files to be submitted to Plunker.
+
+##### Example
+
+    <plunker-button src="example/manifest.json">
+      Edit on Plunker
+    </plunker-button>
+
+##### manifest.json
+    {
+      "name": "Plunker Button Demo",
+      "description": "A really cool Plunker example",
+      "files": [
+        "index.html",
+        "x-foo.html",
+        "x-foo.css"
+      ]
+    }
+
+
+@element plunker-button
+@blurb Submit files to Plunker
+@status alpha
+@homepage http://robdodson.github.io/plunker-button
+-->
+<polymer-element name="plunker-button" attributes="src strip">
+
+  <template>
+    <style>
+      span {
+        vertical-align: middle;
+        margin: 5px 0 5px 5px;
+      }
+    </style>
+
+    <paper-button raised on-tap="{{openPlunker}}">
+      <core-icon icon="exit-to-app"></core-icon>
+      <span><content></content></span>
+    </paper-button>
+
+  </template>
+
+  <script>
+    (function(window, document, undefined) {
+      function get(url) {
+        // Return a new promise.
+        return new Promise(function(resolve, reject) {
+          // Do the usual XHR stuff
+          var req = new XMLHttpRequest();
+          req.open('GET', url);
+
+          req.onload = function() {
+            // This is called even on 404 etc
+            // so check the status
+            if (req.status == 200) {
+              // Resolve the promise with the response text
+              resolve(req.response);
+            }
+            else {
+              // Otherwise reject with the status text
+              // which will hopefully be a meaningful error
+              reject(Error(req.statusText));
+            }
+          };
+
+          // Handle network errors
+          req.onerror = function() {
+            reject(Error("Network Error"));
+          };
+
+          // Make the request
+          req.send();
+        });
+      }
+
+      function getJSON(url) {
+        return get(url).then(JSON.parse);
+      }
+
+      function formPostData(url, fields) {
+        /**
+         * Form previously posted to target="_blank", but pop-up blockers were
+         * causing this to not work.
+         * If a user chose to bypass pop-up blocker one time and click the
+         * link, they would arrive at a new default plnkr, not a plnkr with the
+         * desired template.
+         */
+        var form = document.createElement('form');
+        form.style.display = 'none';
+        form.method = 'post';
+        form.action = url;
+
+        for (var prop in fields) {
+          var name = prop;
+          var value = fields[prop];
+          var input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = name;
+          input.setAttribute('value', value);
+          form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+        form.remove();
+      }
+
+      Polymer({
+        /**
+         * The `src` attribute should point to a `manifest.json` file that
+         * matches the format in the element description. The contents of
+         * this `manifest.json` are submitted to Plunker.
+         *
+         * @attribute src
+         * @type string
+         * @default null
+         */
+        src: null,
+
+        /**
+         * The `strip` attribute allows you to remove a portion of a filename
+         * before it's submitted to Plunker.
+         *
+         * `<plunker-button strip="-plunker"></plunker-button>`
+         *
+         * will turn the `x-foo-plunker.html` file into `x-foo.html`.
+         *
+         * @attribute strip
+         * @type string
+         * @default '-plunker'
+         */
+        strip: '-plunker',
+
+        /**
+         * The `openPlunker` method will submit your files to Plunker and
+         * open the sketch in the current window. This method is called whenever
+         * the user clicks on the button, but you could also call it using
+         * JavaScript.
+         *
+         * @method openPlunker
+         */
+        openPlunker: function() {
+          var self = this;
+          var exampleFolder = this.src.slice(0, this.src.lastIndexOf('/'));
+          var description = '';
+          // Grab the manifest.json
+          getJSON(this.src)
+            .then(function(manifest) {
+              description = manifest.description;
+              return manifest;
+            })
+            // Read the list of files that need to be submitted and put each
+            // request into the filePromises collection. Use Promise.all to
+            // wait for all requests to return
+            .then(function(manifest) {
+              var filePromises = [];
+              manifest.files.forEach(function(filename) {
+                filePromises.push(
+                  get(exampleFolder + '/' + filename)
+                    .then(function(response) {
+
+                      if (filename.indexOf(self.strip) !== -1) {
+                        filename = filename.replace(self.strip, '');
+                      }
+
+                      return {
+                        name: filename,
+                        content: response
+                      }
+                    })
+                )
+              });
+              return Promise.all(filePromises);
+            })
+            // Take all of the files and process them into a form which will
+            // be submitted to Plunker
+            .then(function(files) {
+              var postData = {};
+
+              files.forEach(function(file) {
+                postData['files[' + file.name + ']'] = file.content;
+              });
+
+              postData['tags[0]'] = "polymer";
+              postData['tags[1]'] = "example";
+              postData.private = true;
+              postData.description = description;
+              formPostData('http://plnkr.co/edit/?p=preview', postData);
+            })
+            .catch(function(err) {
+              throw err;
+            });
+        }
+
+      });
+    })(window, document);
+  </script>
+
+</polymer-element>
